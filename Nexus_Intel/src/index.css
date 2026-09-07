@@ -1,1 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { background: #f5f1ea; }
+  body { min-width: 320px; min-height: 100vh; margin: 0; }
+  button, input, select { font: inherit; }
+}
+
+@keyframes rise-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes soft-pulse { 50% { box-shadow: 0 0 0 7px rgb(192 138 46 / 12%); } }
+@keyframes graph-drift { 50% { transform: translate(2px, -3px); } }
+@keyframes signal-flow { to { stroke-dashoffset: -24; } }
+.animate-rise-in { animation: rise-in 420ms cubic-bezier(.22, 1, .36, 1) both; }
+.animate-rise-in-delay { animation: rise-in 420ms 100ms cubic-bezier(.22, 1, .36, 1) both; }
+.animate-soft-pulse { animation: soft-pulse 2.3s ease-in-out infinite; }
+.animate-graph-drift { animation: graph-drift 3.4s ease-in-out infinite; }
+.animate-signal-flow { stroke-dasharray: 7 7; animation: signal-flow 1.15s linear infinite; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; scroll-behavior: auto !important; transition-duration: 1ms !important; } }
