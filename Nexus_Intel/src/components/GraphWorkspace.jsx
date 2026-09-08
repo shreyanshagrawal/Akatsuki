@@ -7,14 +7,16 @@ import { CaseNarrativeModal } from '../graph/CaseNarrativeModal'
 import { AVAILABLE_CASES, getCaseGraphData } from '../graph/caseRegistry'
 import { alertSeed } from '../dashboardData'
 
-export function GraphWorkspace({ onExit, onIndividuals, onAlerts, onIntel, initialCaseId = 'CAS-2026-1140' }) {
+export function GraphWorkspace({ onExit, onIndividuals, onAlerts, onIntel, initialCaseId = 'CAS-2026-1140', activeCase = null, caseItems = [] }) {
   const [engine, setEngine] = useState('reactflow') // 'reactflow' (Base Graph) | 'cytoscape' (Advanced Analytics)
   const [activeCaseId, setActiveCaseId] = useState(initialCaseId)
   const [showNarrativeModal, setShowNarrativeModal] = useState(false)
   const [showCaseDropdown, setShowCaseDropdown] = useState(false)
 
-  const activeCaseMeta = AVAILABLE_CASES.find((c) => c.id === activeCaseId) || AVAILABLE_CASES[0]
-  const caseGraphData = getCaseGraphData(activeCaseId)
+  const graphCases = [...AVAILABLE_CASES, ...caseItems.filter((item) => !AVAILABLE_CASES.some((known) => known.id === item.id))]
+  const activeCaseItem = activeCaseId === activeCase?.id ? activeCase : graphCases.find((item) => item.id === activeCaseId)
+  const activeCaseMeta = graphCases.find((c) => c.id === activeCaseId) || activeCase || AVAILABLE_CASES[0]
+  const caseGraphData = getCaseGraphData(activeCaseId, activeCaseItem)
 
   return (
     <div className="flex h-screen flex-col bg-[#f5f1ea] text-[#171511]">
@@ -43,7 +45,7 @@ export function GraphWorkspace({ onExit, onIndividuals, onAlerts, onIntel, initi
             {showCaseDropdown && (
               <div className="animate-rise-in absolute left-0 top-full z-40 mt-1.5 w-80 rounded-2xl border border-[#d8d3c8] bg-white p-2 shadow-xl">
                 <p className="px-3 py-1.5 font-mono text-[9px] uppercase tracking-wider text-[#8a8578]">Select Investigation</p>
-                {AVAILABLE_CASES.map((c) => (
+                {graphCases.map((c) => (
                   <button
                     key={c.id}
                     onClick={() => {
@@ -173,9 +175,9 @@ export function GraphWorkspace({ onExit, onIndividuals, onAlerts, onIntel, initi
       {/* Main Canvas */}
       <main className="min-h-0 flex-1">
         {engine === 'cytoscape' ? (
-          <CytoscapeGraph caseId={activeCaseId} />
+          <CytoscapeGraph caseId={activeCaseId} caseItem={activeCaseItem} />
         ) : (
-          <CaseGraph caseId={activeCaseId} />
+          <CaseGraph caseId={activeCaseId} caseItem={activeCaseItem} />
         )}
       </main>
 

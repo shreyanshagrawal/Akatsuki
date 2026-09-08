@@ -76,7 +76,7 @@ function runPhysicsLayout(cy) {
   cy.fit(undefined, 55)
 }
 
-export function CytoscapeGraph({ caseId = 'CAS-2026-1140' }) {
+export function CytoscapeGraph({ caseId = 'CAS-2026-1140', caseItem = null }) {
   const containerRef = useRef(null)
   const cyRef = useRef(null)
   const selectedIdRef = useRef(null)
@@ -87,7 +87,7 @@ export function CytoscapeGraph({ caseId = 'CAS-2026-1140' }) {
   const [activeAlgorithm, setActiveAlgorithm] = useState(null)
   const [analyticsStats, setAnalyticsStats] = useState(null)
 
-  const caseGraphData = useMemo(() => getCaseGraphData(caseId), [caseId])
+  const caseGraphData = useMemo(() => getCaseGraphData(caseId, caseItem), [caseId, caseItem])
   const victimIndex = useMemo(() => buildIndex(caseGraphData.victimTree), [caseGraphData])
   const suspectIndex = useMemo(() => buildIndex(caseGraphData.suspectTree), [caseGraphData])
   const byId = useMemo(() => ({ ...victimIndex.byId, ...suspectIndex.byId }), [victimIndex, suspectIndex])

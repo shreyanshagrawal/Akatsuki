@@ -2,7 +2,19 @@ import { useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, FileText, FolderUp, Save, ShieldCheck, Sparkles, Upload } from 'lucide-react'
 
 const stepLabels = ['Case Info', 'Upload Dossier', 'Review Extracted', 'Confirm & Link']
-const blankForm = { title: '', subject: '', caseId: '', priority: 'Medium', firId: '', incidentAt: '', identityRef: '', location: '' }
+// A complete, clearly fictional record keeps the new-case journey presentation-ready.
+// Users can overwrite any field before publishing.
+const demoForm = {
+  title: 'Operation Amber Route',
+  subject: 'Arjun Mehta',
+  caseId: 'CAS-2026-2048',
+  priority: 'High',
+  firId: 'FIR-CR-2048/2026-MH',
+  incidentAt: '2026-09-06 • 22:15 IST',
+  identityRef: 'KYC-UID-2048-7712-3490',
+  location: 'Container Yard 3, Nhava Sheva Port, Navi Mumbai',
+}
+const demoDossier = { name: 'operation_amber_route_dossier.pdf', demo: true }
 const extractedFieldMeta = [
   ['Primary target / suspect', 'subject'],
   ['FIR registry identifier', 'firId'],
@@ -12,7 +24,7 @@ const extractedFieldMeta = [
 ]
 
 function formFromCase(initialCase) {
-  if (!initialCase) return blankForm
+  if (!initialCase) return { ...demoForm }
   return {
     title: initialCase.title || '',
     subject: initialCase.subject || '',
@@ -29,7 +41,7 @@ export function CaseIntakeWizard({ initialCase, onComplete, onExit }) {
   const isEdit = Boolean(initialCase)
   const [step, setStep] = useState(1)
   const [saved, setSaved] = useState(false)
-  const [dossier, setDossier] = useState(null)
+  const [dossier, setDossier] = useState(() => (initialCase ? null : demoDossier))
   const [form, setForm] = useState(() => formFromCase(initialCase))
 
   const update = (name, value) => { setForm((current) => ({ ...current, [name]: value })); setSaved(false) }
@@ -53,7 +65,7 @@ export function CaseIntakeWizard({ initialCase, onComplete, onExit }) {
       <section className="animate-rise-in mb-7"><h1 className="font-serif text-[30px] leading-tight sm:text-[36px]">{step === 1 ? (isEdit ? <>Edit <em>case details</em></> : <>Start a new <em>investigation</em></>) : step === 2 ? <>Upload the <em>dossier</em></> : step === 3 ? <>Verify extracted <em>intelligence</em></> : (isEdit ? <>Confirm & <em>save</em> changes</> : <>Confirm & <em>link</em> the case</>)}</h1><p className="mt-2 max-w-2xl text-sm leading-6 text-[#777166]">{step === 1 ? (isEdit ? "Update the case record's core details." : 'Create the case record before evidence enters the intelligence ledger.') : step === 2 ? 'Attach an FIR or supporting evidence file for extraction and review.' : step === 3 ? 'Cross-reference automated annotations before they are added to the master graph.' : (isEdit ? 'Review the updated case package before saving it.' : 'Review the case package before publishing it to the investigation graph.')}</p></section>
 
       <section className="animate-rise-in-delay rounded-xl bg-white p-5 shadow-md sm:p-7">
-        {step === 1 && <CaseInfo form={form} update={update} />}
+        {step === 1 && <CaseInfo form={form} update={update} isEdit={isEdit} />}
         {step === 2 && <UploadDossier dossier={dossier} setDossier={setDossier} />}
         {step === 3 && <ReviewExtracted form={form} update={update} isEdit={isEdit} />}
         {step === 4 && <ConfirmLink form={form} dossier={dossier} isEdit={isEdit} />}
@@ -72,12 +84,12 @@ function Progress({ step }) {
   return <div className="mb-8 rounded-xl bg-white p-4 shadow-sm"><div className="mb-4 flex justify-between font-mono text-[10px] uppercase tracking-wider text-[#777166]"><span>Step {String(step).padStart(2, '0')} of 04 // {stepLabels[step - 1]}</span><span className="hidden sm:inline"><i className="mr-1 inline-block size-1.5 rounded-full bg-[#c08a2e]" />Case workflow</span></div><div className="relative grid grid-cols-4 before:absolute before:left-[12%] before:right-[12%] before:top-4 before:h-px before:bg-[#d4cebf]"><i className="absolute left-[12%] top-4 h-px bg-[#111] transition-all duration-500" style={{ width: `${Math.max(0, (step - 1) * 25.33)}%` }} />{stepLabels.map((label, index) => { const number = index + 1; const finished = number < step; const active = number === step; return <div key={label} className="relative z-10 text-center"><span className={`mx-auto grid size-8 place-items-center rounded-full text-xs ${finished || active ? 'bg-[#111] text-white' : 'bg-[#ece8e1] text-[#777166]'}`}>{finished ? <Check className="size-4" /> : number}</span><p className={`mt-2 text-[10px] font-medium sm:text-xs ${active ? 'text-[#171511]' : 'text-[#777166]'}`}>{label}</p></div> })}</div></div>
 }
 
-function CaseInfo({ form, update }) {
-  return <div><SectionTitle icon={FileText} title="Case information" text="Add the core details used to open the investigation record." /><div className="grid gap-5 sm:grid-cols-2"><Input label="Case title" value={form.title} placeholder="e.g. Operation Silver Tide" onChange={(value) => update('title', value)} /><Input label="Primary target / subject" value={form.subject} placeholder="e.g. Full name" onChange={(value) => update('subject', value)} /><Input label="Case identifier" value={form.caseId} mono placeholder="CAS-YYYY-NNNN" onChange={(value) => update('caseId', value)} /><label className="block"><span className="mb-2 block text-xs font-semibold">Priority</span><select value={form.priority} onChange={(event) => update('priority', event.target.value)} className="h-11 w-full rounded-lg bg-[#faf7f2] px-3 text-sm outline-none transition focus:bg-white focus:ring-1 focus:ring-[#171511]"><option>High</option><option>Medium</option><option>Low</option></select></label></div></div>
+function CaseInfo({ form, update, isEdit }) {
+  return <div><SectionTitle icon={FileText} title="Case information" text="Add the core details used to open the investigation record." />{!isEdit && <p className="mb-5 rounded-lg bg-[#f4ead8] p-3 text-xs leading-5 text-[#6e4f14]"><Sparkles className="mr-1 inline size-3.5" />Demo details are prefilled for the hackathon walkthrough. Edit them freely before linking.</p>}<div className="grid gap-5 sm:grid-cols-2"><Input label="Case title" value={form.title} placeholder="e.g. Operation Silver Tide" onChange={(value) => update('title', value)} /><Input label="Primary target / subject" value={form.subject} placeholder="e.g. Full name" onChange={(value) => update('subject', value)} /><Input label="Case identifier" value={form.caseId} mono placeholder="CAS-YYYY-NNNN" onChange={(value) => update('caseId', value)} /><label className="block"><span className="mb-2 block text-xs font-semibold">Priority</span><select value={form.priority} onChange={(event) => update('priority', event.target.value)} className="h-11 w-full rounded-lg bg-[#faf7f2] px-3 text-sm outline-none transition focus:bg-white focus:ring-1 focus:ring-[#171511]"><option>High</option><option>Medium</option><option>Low</option></select></label></div></div>
 }
 
 function UploadDossier({ dossier, setDossier }) {
-  return <div><SectionTitle icon={FolderUp} title="Evidence dossier" text="Attach a PDF, image, or text record. It will be shown for review in the next step." /><label className="flex min-h-56 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[#c9c2b5] bg-[#faf7f2] p-6 text-center transition hover:border-[#171511] hover:bg-[#f5f1ea]"><Upload className="size-8 text-[#846019]" /><p className="mt-4 text-sm font-semibold">{dossier ? dossier.name : 'Choose a dossier file'}</p><p className="mt-1 text-xs text-[#777166]">PDF, image, or text document · files remain local in this demo</p><input className="sr-only" type="file" accept=".pdf,image/*,.txt" onChange={(event) => setDossier(event.target.files?.[0] || null)} /></label>{dossier ? <p className="mt-4 flex items-center gap-2 rounded-lg bg-[#f4ead8] p-3 text-xs text-[#6e4f14]"><ShieldCheck className="size-4" /> {dossier.name} is ready for extraction.</p> : <p className="mt-4 text-xs text-[#777166]">No file selected. You can still continue without one.</p>}</div>
+  return <div><SectionTitle icon={FolderUp} title="Evidence dossier" text="Attach a PDF, image, or text record. It will be shown for review in the next step." /><label className="flex min-h-56 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[#c9c2b5] bg-[#faf7f2] p-6 text-center transition hover:border-[#171511] hover:bg-[#f5f1ea]"><Upload className="size-8 text-[#846019]" /><p className="mt-4 text-sm font-semibold">{dossier ? dossier.name : 'Choose a dossier file'}</p><p className="mt-1 text-xs text-[#777166]">PDF, image, or text document · files remain local in this demo</p><input className="sr-only" type="file" accept=".pdf,image/*,.txt" onChange={(event) => setDossier(event.target.files?.[0] || null)} /></label>{dossier ? <p className="mt-4 flex items-center gap-2 rounded-lg bg-[#f4ead8] p-3 text-xs text-[#6e4f14]"><ShieldCheck className="size-4" /> {dossier.name} is ready for extraction.{dossier.demo ? ' Sample dossier selected for this walkthrough.' : ''}</p> : <p className="mt-4 text-xs text-[#777166]">No file selected. You can still continue without one.</p>}</div>
 }
 
 function ReviewExtracted({ form, update, isEdit }) {

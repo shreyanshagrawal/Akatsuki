@@ -50,19 +50,19 @@ function pickHandles(sourcePos, targetPos) {
   return dy > 0 ? { sourceHandle: 's-b', targetHandle: 't-t' } : { sourceHandle: 's-t', targetHandle: 't-b' }
 }
 
-export function CaseGraph({ caseId = 'CAS-2026-1140' }) {
+export function CaseGraph({ caseId = 'CAS-2026-1140', caseItem = null }) {
   return (
     <ReactFlowProvider key={caseId}>
-      <CaseGraphCanvas caseId={caseId} />
+      <CaseGraphCanvas caseId={caseId} caseItem={caseItem} />
     </ReactFlowProvider>
   )
 }
 
-function CaseGraphCanvas({ caseId }) {
+function CaseGraphCanvas({ caseId, caseItem }) {
   const wrapperRef = useRef(null)
   const [containerSize, setContainerSize] = useState(null)
 
-  const caseGraphData = useMemo(() => getCaseGraphData(caseId), [caseId])
+  const caseGraphData = useMemo(() => getCaseGraphData(caseId, caseItem), [caseId, caseItem])
   const victimIndex = useMemo(() => buildIndex(caseGraphData.victimTree), [caseGraphData])
   const suspectIndex = useMemo(() => buildIndex(caseGraphData.suspectTree), [caseGraphData])
   const byId = useMemo(() => ({ ...victimIndex.byId, ...suspectIndex.byId }), [victimIndex, suspectIndex])
@@ -82,6 +82,9 @@ function CaseGraphCanvas({ caseId }) {
   const [expandedIds, setExpandedIds] = useState(() => {
     if (caseId === 'CAS-2026-1140') {
       return new Set(['v-hriday', 's-akshay', 'v-comms', 's-transport', 's-accomplice', 'v-spoof'])
+    }
+    if (caseId !== 'CAS-2026-0392') {
+      return new Set([caseGraphData.victimTree.id, caseGraphData.suspectTree.id])
     }
     return new Set(['v-root', 's-root', 's-financial', 'v-financial', 'v-fir'])
   })

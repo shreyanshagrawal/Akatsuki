@@ -10,8 +10,6 @@ import { CaseOverview } from './intel/CaseOverview'
 import { IntelligenceHub } from './intel/IntelligenceHub'
 import { initialCases } from './dashboardData'
 
-const GRAPH_SUPPORTED_CASES = new Set(['CAS-2026-1140', 'CAS-2026-0392'])
-
 function App() {
   const [session, setSession] = useState(null)
   const [view, setView] = useState('dashboard')
@@ -30,7 +28,7 @@ function App() {
 
   const openCase = (item) => {
     setSelectedCase(item)
-    setView(GRAPH_SUPPORTED_CASES.has(item.id) ? 'graph' : 'case-overview')
+    setView('graph')
   }
 
   const startNewCase = () => { setEditingCase(null); setView('intake') }
@@ -43,6 +41,10 @@ function App() {
       const created = { ...form, id: form.caseId, status: 'Active', risk: form.priority, lead: 'Insp. D. Miller', updated: 'Today, just now', type: 'dossier', ai: true }
       setCases((current) => [created, ...current])
       flashAdded(created.id)
+      setSelectedCase(created)
+      setEditingCase(null)
+      setView('graph')
+      return
     }
     setEditingCase(null)
     setView('dashboard')
@@ -57,7 +59,7 @@ function App() {
     return <CaseIntakeWizard initialCase={editingCase} onComplete={finishIntake} onExit={() => { setEditingCase(null); setView('dashboard') }} />
   }
 
-  if (view === 'graph') return <GraphWorkspace initialCaseId={selectedCase?.id || 'CAS-2026-1140'} onAlerts={() => setView('alerts')} onExit={() => setView('dashboard')} onIndividuals={() => setView('individuals')} onIntel={() => { setIntelEntry(null); setView('intel') }} />
+  if (view === 'graph') return <GraphWorkspace initialCaseId={selectedCase?.id || 'CAS-2026-1140'} activeCase={selectedCase} caseItems={cases} onAlerts={() => setView('alerts')} onExit={() => setView('dashboard')} onIndividuals={() => setView('individuals')} onIntel={() => { setIntelEntry(null); setView('intel') }} />
   if (view === 'individuals') return <KeyIndividuals caseId={selectedCase?.id || 'CAS-2026-1140'} onExit={() => setView('graph')} />
   if (view === 'alerts') return <AlertsCenter onExit={() => setView('dashboard')} onGraph={() => setView('graph')} />
   if (view === 'case-overview') return <CaseOverview caseItem={selectedCase} onExit={() => setView('dashboard')} onIntel={openIntelFromCase} />
