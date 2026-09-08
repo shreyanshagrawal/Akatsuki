@@ -55,8 +55,8 @@ export function LoginPortal({ onAuthenticate }) {
               <BrandMark />
             </div>
             <div className="mb-8 text-center">
-              <h1 id="login-title" className="text-[28px] font-bold leading-[34px] tracking-tight">Welcome to <em className="font-serif text-[31px] font-normal">investigations</em></h1>
-              <p className="mt-3 text-sm leading-[22px] text-[#8a8578]">Secure investigator access</p>
+              <h1 id="login-title" className="text-[28px] font-bold leading-[34px] tracking-tight">Welcome to <em className="font-serif text-[31px] font-normal">Anveshak</em></h1>
+              <p className="mt-2 text-sm leading-[22px] text-[#8a8578]">AI-Powered Crime Network Analysis System</p>
             </div>
 
             <form className="flex flex-col gap-6" onSubmit={submit}>

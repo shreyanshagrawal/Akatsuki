@@ -10,7 +10,7 @@ export function CaseOverview({ caseItem, onExit, onIntel }) {
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-8">
           <div className="flex items-center gap-3">
             <span className="grid size-7 place-items-center rounded bg-[#111] text-white"><Sparkles className="size-4" /></span>
-            <span className="text-[13px] font-semibold uppercase tracking-wider">Nexus // Intel</span>
+            <span className="text-[13px] font-semibold uppercase tracking-wider">Anveshak // Intel</span>
             <span className="hidden font-mono text-[10px] text-[#8a8578] sm:inline">CASE OVERVIEW</span>
           </div>
           <button className="inline-flex items-center gap-2 text-xs text-[#666052] hover:text-[#171511]" onClick={onExit}><ArrowLeft className="size-4" /> Dashboard</button>

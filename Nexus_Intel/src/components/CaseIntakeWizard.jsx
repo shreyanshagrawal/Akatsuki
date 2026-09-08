@@ -43,7 +43,7 @@ export function CaseIntakeWizard({ initialCase, onComplete, onExit }) {
   return <div className="min-h-screen bg-[#f5f1ea] text-[#171511]">
     <header className="sticky top-0 z-20 border-b border-[#e5e0d8] bg-[#f5f1ea]/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-8">
-        <div className="flex items-center gap-3"><span className="grid size-7 place-items-center rounded bg-[#111] text-white"><Sparkles className="size-4" /></span><p className="text-[13px] font-semibold uppercase tracking-wider">Nexus // Intel</p><span className="hidden rounded-full bg-[#ece8e1] px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[#666052] sm:inline">{isEdit ? 'Case edit // wizard' : 'Case initiation // wizard'}</span></div>
+        <div className="flex items-center gap-3"><span className="grid size-7 place-items-center rounded bg-[#111] text-white"><Sparkles className="size-4" /></span><p className="text-[13px] font-semibold uppercase tracking-wider">Anveshak // Intel</p><span className="hidden rounded-full bg-[#ece8e1] px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[#666052] sm:inline">{isEdit ? 'Case edit // wizard' : 'Case initiation // wizard'}</span></div>
         <button className="inline-flex items-center gap-2 text-xs text-[#666052] transition hover:text-[#171511]" onClick={onExit}><ArrowLeft className="size-4" /> Exit to dashboard</button>
       </div>
     </header>
