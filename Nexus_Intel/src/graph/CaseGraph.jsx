@@ -42,22 +42,20 @@ export function CaseGraph() {
   const [expandedIds, setExpandedIds] = useState(() => new Set(['v-root', 's-root']))
   const [selectedId, setSelectedId] = useState(null)
 
-  const handleNodeClick = useCallback(
-    (id) => {
-      const isCurrentlyOpen = selectedId === id
-      setSelectedId(isCurrentlyOpen ? null : id)
-      setExpandedIds((current) => {
-        const next = new Set(current)
-        if (isCurrentlyOpen) {
-          for (const descendantId of collectDescendants(id, new Set())) next.delete(descendantId)
-        } else if (byId[id].childIds.length > 0) {
-          next.add(id)
-        }
-        return next
-      })
-    },
-    [selectedId],
-  )
+  const handleNodeClick = useCallback((id) => {
+    setSelectedId((current) => (current === id ? null : id))
+    const hasChildren = byId[id].childIds.length > 0
+    if (!hasChildren) return
+    setExpandedIds((current) => {
+      const next = new Set(current)
+      if (current.has(id)) {
+        for (const descendantId of collectDescendants(id, new Set())) next.delete(descendantId)
+      } else {
+        next.add(id)
+      }
+      return next
+    })
+  }, [])
 
   const visibleIds = useMemo(() => {
     const victimVisible = computeVisible('v-root', expandedIds)
@@ -135,6 +133,7 @@ export function CaseGraph() {
       nodesDraggable={false}
       nodesConnectable={false}
       elementsSelectable={false}
+      onNodeClick={() => {}}
       panOnScroll
       zoomOnScroll
       fitView
