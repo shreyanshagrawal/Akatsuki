@@ -63,6 +63,13 @@ export function CaseGraph() {
     return new Set([...victimVisible, ...suspectVisible])
   }, [expandedIds])
 
+  const linkedId = useMemo(() => {
+    if (!selectedId) return null
+    const edge = crossEdges.find((candidate) => candidate.source === selectedId || candidate.target === selectedId)
+    if (!edge) return null
+    return edge.source === selectedId ? edge.target : edge.source
+  }, [selectedId])
+
   const suspectDegrees = useMemo(() => {
     const ids = Object.keys(suspectIndex.byId)
     const counts = ids.map((id) => degreeOf(id, structuralEdges))
@@ -88,6 +95,9 @@ export function CaseGraph() {
         position: { x: origin.x + rel.x, y: origin.y + rel.y },
         draggable: false,
         selectable: false,
+        // Selected node's expanded dropdown can be taller than the gap to its
+        // sibling below; raise it above neighbors so its buttons stay clickable.
+        zIndex: selectedId === id ? 1000 : undefined,
         data: {
           label: node.label,
           kind: node.kind,
@@ -95,13 +105,14 @@ export function CaseGraph() {
           hasChildren: node.childIds.length > 0,
           isExpanded: expandedIds.has(id),
           isSelected: selectedId === id,
+          isLinked: id === linkedId,
           size: isSuspect ? degreeSize(degree, suspectDegrees.min, suspectDegrees.max) : 56,
           color: isSuspect ? degreeColor(degree, suspectDegrees.min, suspectDegrees.max) : VICTIM_COLOR,
           onToggle: () => handleNodeClick(id),
         },
       }
     })
-  }, [visibleIds, expandedIds, selectedId, suspectDegrees, handleNodeClick])
+  }, [visibleIds, expandedIds, selectedId, linkedId, suspectDegrees, handleNodeClick])
 
   const edges = useMemo(() => {
     const withHandles = structuralEdges.map((edge) => {
@@ -120,7 +131,7 @@ export function CaseGraph() {
         type: 'smoothstep',
         animated: emphasized,
         style: { stroke: emphasized ? '#ef4444' : '#64748b', strokeWidth: emphasized ? 3 : 1.5, opacity: dimmed ? 0.15 : 1 },
-        labelStyle: { fill: '#cbd5e1', fontSize: 10 },
+        labelStyle: { fill: '#cbd5e1', fontSize: 10, opacity: dimmed ? 0.15 : 1 },
       }
     })
   }, [visibleIds, selectedId])
@@ -133,6 +144,7 @@ export function CaseGraph() {
       nodesDraggable={false}
       nodesConnectable={false}
       elementsSelectable={false}
+      // Required: without a node-level handler, React Flow sets pointer-events:none on every node wrapper.
       onNodeClick={() => {}}
       panOnScroll
       zoomOnScroll

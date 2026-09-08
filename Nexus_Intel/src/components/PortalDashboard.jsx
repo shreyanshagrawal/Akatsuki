@@ -2,10 +2,10 @@ import { useMemo, useRef, useState } from 'react'
 import { Bell, FolderOpen, Network, Plus, Search, Shield, Siren } from 'lucide-react'
 import { CaseDirectory } from './CaseDirectory'
 import { DashboardSidebar } from './DashboardSidebar'
-import { initialCases } from '../dashboardData'
+import { alertSeed, initialCases } from '../dashboardData'
 
-const metrics = [{ label: 'Active Cases', value: '01', icon: FolderOpen, action: 'cases' }, { label: 'High-Priority Alerts', value: '01', icon: Siren, action: 'alerts' }, { label: 'Updated Today', value: '01', icon: Shield, action: 'cases' }, { label: 'Entities Tracked', value: '08', icon: Network, action: 'graph' }]
 export function PortalDashboard({ onSignOut, onCreateCase, onViewVictim, onGraph, onAlerts }) {
+  const metrics = [{ label: 'Active Cases', value: '01', icon: FolderOpen, action: 'cases' }, { label: 'High-Priority Alerts', value: String(alertSeed.length).padStart(2, '0'), icon: Siren, action: 'alerts' }, { label: 'Updated Today', value: '01', icon: Shield, action: 'cases' }, { label: 'Entities Tracked', value: '26', icon: Network, action: 'graph' }]
   const [activeNav, setActiveNav] = useState('Dashboard'); const [filter, setFilter] = useState('All Cases'); const [query, setQuery] = useState('')
   const casesRef = useRef(null)
   const cases = useMemo(() => initialCases.filter((item) => `${item.id} ${item.title} ${item.subject}`.toLowerCase().includes(query.toLowerCase())), [query])
