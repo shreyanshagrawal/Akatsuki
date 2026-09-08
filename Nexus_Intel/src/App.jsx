@@ -10,7 +10,7 @@ import { CaseOverview } from './intel/CaseOverview'
 import { IntelligenceHub } from './intel/IntelligenceHub'
 import { initialCases } from './dashboardData'
 
-const PRIMARY_CASE_ID = 'CAS-2026-0392'
+const GRAPH_SUPPORTED_CASES = new Set(['CAS-2026-1140', 'CAS-2026-0392'])
 
 function App() {
   const [session, setSession] = useState(null)
@@ -30,7 +30,7 @@ function App() {
 
   const openCase = (item) => {
     setSelectedCase(item)
-    setView(item.id === PRIMARY_CASE_ID ? 'graph' : 'case-overview')
+    setView(GRAPH_SUPPORTED_CASES.has(item.id) ? 'graph' : 'case-overview')
   }
 
   const startNewCase = () => { setEditingCase(null); setView('intake') }
@@ -57,8 +57,8 @@ function App() {
     return <CaseIntakeWizard initialCase={editingCase} onComplete={finishIntake} onExit={() => { setEditingCase(null); setView('dashboard') }} />
   }
 
-  if (view === 'graph') return <GraphWorkspace onAlerts={() => setView('alerts')} onExit={() => setView('dashboard')} onIndividuals={() => setView('individuals')} />
-  if (view === 'individuals') return <KeyIndividuals onExit={() => setView('graph')} />
+  if (view === 'graph') return <GraphWorkspace initialCaseId={selectedCase?.id || 'CAS-2026-1140'} onAlerts={() => setView('alerts')} onExit={() => setView('dashboard')} onIndividuals={() => setView('individuals')} onIntel={() => { setIntelEntry(null); setView('intel') }} />
+  if (view === 'individuals') return <KeyIndividuals caseId={selectedCase?.id || 'CAS-2026-1140'} onExit={() => setView('graph')} />
   if (view === 'alerts') return <AlertsCenter onExit={() => setView('dashboard')} onGraph={() => setView('graph')} />
   if (view === 'case-overview') return <CaseOverview caseItem={selectedCase} onExit={() => setView('dashboard')} onIntel={openIntelFromCase} />
   if (view === 'intel') return <IntelligenceHub initialTab={intelEntry?.tab} initialQuery={intelEntry?.query} onExit={() => { setIntelEntry(null); setView('dashboard') }} />
