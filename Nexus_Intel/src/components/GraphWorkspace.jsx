@@ -8,7 +8,7 @@ import { AVAILABLE_CASES, getCaseGraphData } from '../graph/caseRegistry'
 import { alertSeed } from '../dashboardData'
 
 export function GraphWorkspace({ onExit, onIndividuals, onAlerts, onIntel, initialCaseId = 'CAS-2026-1140' }) {
-  const [engine, setEngine] = useState('cytoscape') // 'cytoscape' | 'reactflow'
+  const [engine, setEngine] = useState('reactflow') // 'reactflow' (Base Graph) | 'cytoscape' (Advanced Analytics)
   const [activeCaseId, setActiveCaseId] = useState(initialCaseId)
   const [showNarrativeModal, setShowNarrativeModal] = useState(false)
   const [showCaseDropdown, setShowCaseDropdown] = useState(false)
@@ -77,19 +77,8 @@ export function GraphWorkspace({ onExit, onIndividuals, onAlerts, onIntel, initi
         {/* Engine Switcher & Navigation */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Dual Engine Switcher */}
+          {/* Workspace View Mode Toggle */}
           <div className="flex items-center rounded-full border border-[#e5e0d8] bg-[#faf8f5] p-1 shadow-inner">
-            <button
-              onClick={() => setEngine('cytoscape')}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition ${
-                engine === 'cytoscape'
-                  ? 'bg-[#171511] text-white shadow-sm'
-                  : 'text-[#625d53] hover:text-[#171511]'
-              }`}
-              title="Cytoscape.js Network Engine: Force physics & Graph Theory Math"
-            >
-              <Cpu className="size-3.5" />
-              Cytoscape.js
-            </button>
             <button
               onClick={() => setEngine('reactflow')}
               className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition ${
@@ -97,10 +86,22 @@ export function GraphWorkspace({ onExit, onIndividuals, onAlerts, onIntel, initi
                   ? 'bg-[#171511] text-white shadow-sm'
                   : 'text-[#625d53] hover:text-[#171511]'
               }`}
-              title="React Flow Engine: Radial case hierarchy & orbital layout"
+              title="Base Graph: Clean radial case hierarchy & orbital layout"
             >
               <Network className="size-3.5" />
-              React Flow
+              Base Graph
+            </button>
+            <button
+              onClick={() => setEngine('cytoscape')}
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition ${
+                engine === 'cytoscape'
+                  ? 'bg-[#171511] text-white shadow-sm'
+                  : 'text-[#625d53] hover:text-[#171511]'
+              }`}
+              title="Advanced Analytics: Physics simulation, PageRank, bridge detection & graph theory math"
+            >
+              <Cpu className="size-3.5" />
+              Advanced Analytics
             </button>
           </div>
 
@@ -165,7 +166,7 @@ export function GraphWorkspace({ onExit, onIndividuals, onAlerts, onIntel, initi
           </span>
         </div>
         <span className="font-mono text-[11px] text-[#8a8578]">
-          Interactive Engine: {engine === 'cytoscape' ? 'Cytoscape.js Physics' : 'React Flow Orbital'} • Click any node to open dossier
+          Active Mode: {engine === 'cytoscape' ? 'Advanced Analytics (Physics & Graph Theory)' : 'Base Graph (Radial Case Hierarchy)'} • Click any node to open dossier
         </span>
       </div>
 
