@@ -172,20 +172,27 @@ export function CaseNarrativeModal({ onClose, onOpenGraph }) {
 
             {/* Physical Evidence Photo Exhibit */}
             <div className="mt-4 rounded-xl border border-[#f1c6c3] bg-[#fdf6f6] p-4">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#c0362c]">Forensic Exhibit // EVD-W87 (Recovered Murder Weapon)</span>
-              <div className="mt-2.5 flex flex-col sm:flex-row items-start gap-4">
-                <img
-                  src="/evidence/knife_w87.jpg"
-                  alt="Forensic Weapon Exhibit W87"
-                  className="w-full sm:w-36 h-36 rounded-xl object-cover border border-[#e8bdb9] shadow-sm shrink-0"
-                />
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#c0362c]">Forensic Exhibit // EX-W87 (Recovered Murder Weapon)</span>
+                <span className="rounded bg-white px-2 py-0.5 font-mono text-[9px] font-semibold text-[#c0362c] border border-[#e8bdb9]">FSL Verified</span>
+              </div>
+              <div className="mt-3 flex flex-col sm:flex-row items-start gap-4">
+                <div className="shrink-0 overflow-hidden rounded-xl border border-[#e8bdb9] bg-white p-1 shadow-sm">
+                  <img
+                    src="/evidence/knife_w87.jpg"
+                    alt="Forensic Weapon Exhibit W87"
+                    className="w-full sm:w-28 h-48 object-contain"
+                  />
+                </div>
                 <div className="min-w-0 text-xs text-[#554f43]">
-                  <h5 className="font-serif text-base font-bold text-[#171511]">Tactical Folding Blade with "W87" Inscription</h5>
+                  <h5 className="font-serif text-base font-bold text-[#171511]">Tactical Folding Knife with &ldquo;W87&rdquo; Laser Mark &amp; Spider Relief</h5>
                   <p className="mt-1 leading-relaxed">
-                    Recovered from drainage grate 120 meters south of the Dock Road warehouse. Forensic serology identified high-titer blood micro-spatter matching the DNA profile of <strong>Hriday V. Mehta</strong>. Latent ridge impressions on the bolster matched the right index and thumb print of <strong>Akshay Kumar Singh</strong>.
+                    Recovered from storm drainage grate 120 meters south of the Dock Road warehouse. Forensic serology identified high-titer blood micro-spatter matching the DNA profile of <strong>Hriday V. Mehta</strong>. Latent friction ridge impressions on the stainless bolster matched the right index and thumb print of <strong>Akshay Kumar Singh</strong>.
                   </p>
-                  <div className="mt-2 flex flex-wrap gap-2 font-mono text-[10px] text-[#777166]">
-                    <span className="rounded bg-white px-2 py-0.5 border border-[#e5c2be]">Status: CFSL Evidence Vault</span>
+                  <div className="mt-3 flex flex-wrap gap-2 font-mono text-[10px] text-[#777166]">
+                    <span className="rounded bg-white px-2 py-0.5 border border-[#e5c2be]">Serial Mark: W87</span>
+                    <span className="rounded bg-white px-2 py-0.5 border border-[#e5c2be]">Design: Spider Relief Grip</span>
+                    <span className="rounded bg-white px-2 py-0.5 border border-[#e5c2be]">Status: Central Evidence Vault</span>
                     <span className="rounded bg-white px-2 py-0.5 border border-[#e5c2be]">Chain of Custody: Logged</span>
                   </div>
                 </div>

@@ -408,16 +408,23 @@ export function KeyIndividuals({ onExit, caseId = 'CAS-2026-1140' }) {
                         )}
 
                         {person.weaponImage && (
-                          <div className="sm:col-span-2 rounded-xl border border-[#f1c6c3] bg-[#fdf6f6] p-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                            <img
-                              src={person.weaponImage}
-                              alt="Physical Murder Weapon W87"
-                              className="size-24 rounded-lg object-cover border border-[#e5c2be] shadow-sm shrink-0"
-                            />
+                          <div className="sm:col-span-2 rounded-xl border border-[#f1c6c3] bg-[#fdf6f6] p-3.5 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                            <div className="relative group shrink-0 overflow-hidden rounded-xl border border-[#e5c2be] bg-white p-1 shadow-sm">
+                              <img
+                                src={person.weaponImage}
+                                alt="Physical Murder Weapon W87"
+                                className="h-36 w-20 sm:w-24 object-contain transition-transform duration-200 group-hover:scale-105"
+                              />
+                            </div>
                             <div className="min-w-0">
-                              <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-[#c0362c]">Physical Evidence Exhibit // EVD-W87</span>
-                              <h4 className="font-serif text-sm font-bold text-[#171511]">Tactical Folding Knife (Mark: W87)</h4>
-                              <p className="mt-0.5 text-xs text-[#554f43]">Murder weapon recovered from drainage trench 120m south of Dock Road warehouse. High-titer blood traces on blade confirmed matching Hriday V. Mehta DNA, with Akshay Kumar Singh thumbprint on bolster.</p>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-[#c0362c]">Forensic Weapon Exhibit // EX-W87</span>
+                                <span className="rounded bg-[#fbeaea] px-1.5 py-0.5 font-mono text-[9px] font-semibold text-[#c0362c] border border-[#f1c6c3]">CFSL Vault Logged</span>
+                              </div>
+                              <h4 className="mt-1 font-serif text-base font-bold text-[#171511]">Tactical Folding Knife (Laser Mark: &ldquo;W87&rdquo;)</h4>
+                              <p className="mt-1 text-xs leading-relaxed text-[#554f43]">
+                                Confirmed murder weapon recovered from drainage trench 120m south of Dock Road warehouse. Features a black-coated blade with <strong>&ldquo;W87&rdquo;</strong> laser engraving and carved spider relief on stainless handle. Forensic serology confirmed <strong>Hriday V. Mehta DNA</strong> in micro-spatter on blade edge; latent thumbprint on bolster matched <strong>Akshay Kumar Singh</strong>.
+                              </p>
                             </div>
                           </div>
                         )}
