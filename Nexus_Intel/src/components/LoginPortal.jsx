@@ -84,7 +84,7 @@ export function LoginPortal({ onAuthenticate }) {
 
           <aside className="mt-4 rounded-xl border border-[#e5e0d8] bg-[#faf7f2] p-3.5 text-xs text-[#625d53]" aria-label="Demo login credentials">
             <div className="mb-2 flex items-center gap-1.5 font-semibold text-[#171511]"><LockKeyhole className="size-3.5" /> Demo access only</div>
-            <p>Use <code className="font-mono text-[11px] text-[#171511]">investigator.roy@cbi.gov.in</code> / <code className="font-mono text-[11px] text-[#171511]">Nexus@2026</code></p>
+            <p>Use <code className="font-mono text-[11px] text-[#171511]">{DEMO_CREDENTIALS.email}</code> / <code className="font-mono text-[11px] text-[#171511]">{DEMO_CREDENTIALS.password}</code></p>
           </aside>
           <div className="mt-7 text-center"><p className="flex items-center justify-center gap-1.5 text-[13px] text-[#8a8578]"><LockKeyhole className="size-[15px]" />This session is logged and monitored for audit compliance.</p><p className="mt-3 font-mono text-[11px] uppercase tracking-wider text-[#8a8578]">SEC Verified • CJIS Compliant • 18 U.S.C. § 1030 Applies</p></div>
         </div>
