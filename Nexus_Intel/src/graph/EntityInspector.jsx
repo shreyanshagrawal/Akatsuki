@@ -89,24 +89,33 @@ export function EntityInspector({ entity, connectedEntities = [], onClose, onSel
       )}
 
       {/* Header */}
-      <div className="flex items-start justify-between gap-2 border-b border-[#e5e0d8] bg-[#faf8f5] px-4 py-3">
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="font-mono text-[9px] uppercase tracking-wider text-[#8a8578]">Entity dossier</span>
-            <span
-              className={`rounded-full px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase ${
-                isSuspect
-                  ? riskRating === 'Critical'
-                    ? 'border border-[#f1c6c3] bg-[#fbeaea] text-[#c0362c]'
-                    : 'border border-[#fde4ba] bg-[#fff4df] text-[#a47621]'
-                  : 'border border-[#d6e4ff] bg-[#eef4ff] text-[#2457a6]'
-              }`}
-            >
-              {riskRating}
-            </span>
+      <div className="flex items-start justify-between gap-3 border-b border-[#e5e0d8] bg-[#faf8f5] px-4 py-3">
+        <div className="flex items-start gap-3 min-w-0">
+          {entity.avatar && (
+            <img
+              src={entity.avatar}
+              alt={entity.label}
+              className="size-12 rounded-xl object-cover border border-[#d8d3c8] shadow-sm shrink-0"
+            />
+          )}
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-[#8a8578]">Entity dossier</span>
+              <span
+                className={`rounded-full px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase ${
+                  isSuspect
+                    ? riskRating === 'Critical'
+                      ? 'border border-[#f1c6c3] bg-[#fbeaea] text-[#c0362c]'
+                      : 'border border-[#fde4ba] bg-[#fff4df] text-[#a47621]'
+                    : 'border border-[#d6e4ff] bg-[#eef4ff] text-[#2457a6]'
+                }`}
+              >
+                {riskRating}
+              </span>
+            </div>
+            <h2 className="mt-0.5 truncate font-serif text-lg font-semibold leading-tight text-[#171511]">{entity.label}</h2>
+            <p className="mt-0.5 truncate text-[11px] text-[#777166]">{isSuspect ? 'Suspect network' : 'Complainant record'} · {entity.id}</p>
           </div>
-          <h2 className="mt-1 truncate font-serif text-lg font-semibold leading-tight text-[#171511]">{entity.label}</h2>
-          <p className="mt-0.5 truncate text-[11px] text-[#777166]">{isSuspect ? 'Suspect network' : 'Complainant record'} · {entity.id}</p>
         </div>
         <button onClick={onClose} className="shrink-0 rounded-lg p-1 text-[#8a8578] transition hover:bg-[#eae5dd] hover:text-[#171511]" title="Close">
           <X className="size-4" />
@@ -115,6 +124,19 @@ export function EntityInspector({ entity, connectedEntities = [], onClose, onSel
 
       {/* Body */}
       <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4">
+        {entity.evidenceImage && (
+          <div className="rounded-xl border border-[#e5e0d8] bg-white p-3">
+            <span className="font-mono text-[9px] uppercase tracking-wider text-[#8a8578]">Photographic Forensic Exhibit</span>
+            <div className="mt-2 overflow-hidden rounded-lg border border-[#e5e0d8]">
+              <img
+                src={entity.evidenceImage}
+                alt="Forensic Evidence"
+                className="w-full max-h-48 object-cover"
+              />
+            </div>
+          </div>
+        )}
+
         <div className={`flex items-start gap-2.5 rounded-xl border p-3 text-[11px] leading-relaxed ${isSuspect ? 'border-[#f1c6c3] bg-[#fdf6f6] text-[#6d2825]' : 'border-[#e0dfd5] bg-[#faf8f5] text-[#555044]'}`}>
           {isSuspect ? <ShieldAlert className="mt-0.5 size-3.5 shrink-0 text-[#c0362c]" /> : <Shield className="mt-0.5 size-3.5 shrink-0 text-[#2563eb]" />}
           <span>{isSuspect ? 'Flagged across 14 state cyber cells. Live telemetry and ledger auditing active.' : 'Tier 1 protection. Bi-weekly check-in with Mumbai Central Cyber Cell.'}</span>

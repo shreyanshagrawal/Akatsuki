@@ -45,6 +45,7 @@ export const PersonNode = memo(function PersonNode({ data }) {
     label,
     kind,
     side,
+    avatar,
     hasChildren,
     isExpanded,
     isSelected,
@@ -64,21 +65,27 @@ export const PersonNode = memo(function PersonNode({ data }) {
       className={`group relative flex cursor-pointer items-center justify-center rounded-full transition-all duration-200 select-none ${
         isRoot
           ? 'size-16'
-          : isCategory
+          : avatar
             ? 'size-12'
-            : 'size-10'
+            : isCategory
+              ? 'size-12'
+              : 'size-10'
       } ${
-        isRoot
+        avatar
           ? isSuspect
-            ? 'bg-gradient-to-br from-[#c0362c] to-[#991b1b] text-white shadow-[0_4px_16px_rgba(192,54,44,0.3)] border-2 border-white'
-            : 'bg-gradient-to-br from-[#1e3a5f] to-[#0f172a] text-white shadow-[0_4px_16px_rgba(30,58,95,0.3)] border-2 border-white'
-          : isCategory
+            ? 'border-2 border-[#c0362c] shadow-[0_2px_10px_rgba(192,54,44,0.25)]'
+            : 'border-2 border-[#1e3a5f] shadow-[0_2px_10px_rgba(30,58,95,0.25)]'
+          : isRoot
             ? isSuspect
-              ? 'bg-[#fef3c7] text-[#92400e] border-2 border-[#f59e0b] shadow-sm hover:scale-105'
-              : 'bg-[#e0f2fe] text-[#0369a1] border-2 border-[#38bdf8] shadow-sm hover:scale-105'
-            : isSuspect
-              ? 'bg-white text-[#b91c1c] border-2 border-[#fca5a5] shadow-sm hover:scale-110'
-              : 'bg-white text-[#1d4ed8] border-2 border-[#93c5fd] shadow-sm hover:scale-110'
+              ? 'bg-gradient-to-br from-[#c0362c] to-[#991b1b] text-white shadow-[0_4px_16px_rgba(192,54,44,0.3)] border-2 border-white'
+              : 'bg-gradient-to-br from-[#1e3a5f] to-[#0f172a] text-white shadow-[0_4px_16px_rgba(30,58,95,0.3)] border-2 border-white'
+            : isCategory
+              ? isSuspect
+                ? 'bg-[#fef3c7] text-[#92400e] border-2 border-[#f59e0b] shadow-sm hover:scale-105'
+                : 'bg-[#e0f2fe] text-[#0369a1] border-2 border-[#38bdf8] shadow-sm hover:scale-105'
+              : isSuspect
+                ? 'bg-white text-[#b91c1c] border-2 border-[#fca5a5] shadow-sm hover:scale-110'
+                : 'bg-white text-[#1d4ed8] border-2 border-[#93c5fd] shadow-sm hover:scale-110'
       } ${
         isSelected
           ? 'ring-4 ring-[#171511] ring-offset-2 ring-offset-[#fbf9f5] scale-110 shadow-xl'
@@ -97,16 +104,24 @@ export const PersonNode = memo(function PersonNode({ data }) {
       <Handle type="target" position={Position.Left} id="t-l" style={handleStyle} />
       <Handle type="source" position={Position.Left} id="s-l" style={handleStyle} />
 
-      {/* Center Icon */}
-      <Icon
-        className={`${
-          isRoot
-            ? 'size-7'
-            : isCategory
-              ? 'size-5'
-              : 'size-4'
-        }`}
-      />
+      {/* Center Avatar Photo or Icon */}
+      {avatar ? (
+        <img
+          src={avatar}
+          alt={label}
+          className="size-full rounded-full object-cover select-none pointer-events-none"
+        />
+      ) : (
+        <Icon
+          className={`${
+            isRoot
+              ? 'size-7'
+              : isCategory
+                ? 'size-5'
+                : 'size-4'
+          }`}
+        />
+      )}
 
       {/* Expand / Collapse Indicator Button Pill */}
       {hasChildren && (

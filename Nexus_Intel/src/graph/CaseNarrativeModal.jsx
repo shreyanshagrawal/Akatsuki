@@ -48,20 +48,33 @@ export function CaseNarrativeModal({ onClose, onOpenGraph }) {
             <h3 className="mb-3 font-mono text-[11px] uppercase tracking-wider text-[#8a8578]">Strict 6-Person Cast &amp; Role Index</h3>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { name: 'Hriday', role: 'Victim', status: 'Deceased (21:18 IST)', color: 'border-[#2563eb] bg-[#eff6ff] text-[#1e3a5f]', note: 'Discovered missing company funds and arranged warehouse confrontation.' },
-                { name: 'Akshay Kumar Singh', role: 'Murderer', status: 'Prime Suspect', color: 'border-[#dc2626] bg-[#fef2f2] text-[#991b1b]', note: 'Former business partner who stole funds, murdered Hriday at 21:18, and forged an alibi.' },
-                { name: 'Shreyansh Agrawal', role: 'Accountant (Uninvolved)', status: 'Cleared', color: 'border-[#10b981] bg-[#ecfdf5] text-[#065f46]', note: 'Legitimate accountant; received 19:30 call and 22:10 post-mortem spoof text.' },
-                { name: 'Thaniska', role: 'Friend (Uninvolved)', status: 'Cleared', color: 'border-[#10b981] bg-[#ecfdf5] text-[#065f46]', note: 'Received 20:00 warning call; verified at home during the entire incident window.' },
-                { name: 'Swastik', role: 'Driver (False Lead)', status: 'Exonerated', color: 'border-[#f59e0b] bg-[#fffbeb] text-[#92400e]', note: 'Gave Akshay a ride, dropped him at 20:45, and departed 33 mins prior to murder.' },
-                { name: 'Devishi', role: 'Supporter / Accomplice', status: 'High Suspicion', color: 'border-[#f97316] bg-[#fff7ed] text-[#9a3412]', note: 'Received 21:27 panic call; crafted fabricated messages at 21:45 to stage a joint alibi.' },
+                { name: 'Hriday', avatar: '/avatars/hriday.jpg', role: 'Victim', status: 'Deceased (21:18 IST)', color: 'border-[#2563eb] bg-[#eff6ff] text-[#1e3a5f]', note: 'Discovered missing company funds and arranged warehouse confrontation.' },
+                { name: 'Akshay Kumar Singh', avatar: '/avatars/akshay.jpg', role: 'Murderer', status: 'Prime Suspect', color: 'border-[#dc2626] bg-[#fef2f2] text-[#991b1b]', note: 'Former business partner who stole funds, murdered Hriday at 21:18, and forged an alibi.' },
+                { name: 'Shreyansh Agrawal', avatar: '/avatars/shreyansh.jpg', role: 'Accountant (Uninvolved)', status: 'Cleared', color: 'border-[#10b981] bg-[#ecfdf5] text-[#065f46]', note: 'Legitimate accountant; received 19:30 call and 22:10 post-mortem spoof text.' },
+                { name: 'Thaniska', avatar: '/avatars/thaniska.jpg', role: 'Friend (Uninvolved)', status: 'Cleared', color: 'border-[#10b981] bg-[#ecfdf5] text-[#065f46]', note: 'Received 20:00 warning call; verified at home during the entire incident window.' },
+                { name: 'Swastik', avatar: '/avatars/swastik.jpg', role: 'Driver (False Lead)', status: 'Exonerated', color: 'border-[#f59e0b] bg-[#fffbeb] text-[#92400e]', note: 'Gave Akshay a ride, dropped him at 20:45, and departed 33 mins prior to murder.' },
+                { name: 'Devishi', avatar: null, role: 'Supporter / Accomplice', status: 'High Suspicion', color: 'border-[#f97316] bg-[#fff7ed] text-[#9a3412]', note: 'Received 21:27 panic call; crafted fabricated messages at 21:45 to stage a joint alibi.' },
               ].map((c) => (
-                <div key={c.name} className={`rounded-xl border p-3.5 ${c.color}`}>
-                  <div className="flex items-start justify-between gap-1">
-                    <strong className="text-sm font-bold">{c.name}</strong>
-                    <span className="rounded px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase">{c.status}</span>
+                <div key={c.name} className={`rounded-xl border p-3.5 ${c.color} flex items-start gap-3`}>
+                  {c.avatar ? (
+                    <img
+                      src={c.avatar}
+                      alt={c.name}
+                      className="size-11 rounded-xl object-cover border border-black/10 shadow-sm shrink-0"
+                    />
+                  ) : (
+                    <div className="grid size-11 place-items-center rounded-xl border border-black/10 bg-white/60 font-serif text-sm font-bold opacity-80 shrink-0">
+                      {c.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-1">
+                      <strong className="text-sm font-bold truncate">{c.name}</strong>
+                      <span className="rounded px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase shrink-0">{c.status}</span>
+                    </div>
+                    <p className="mt-0.5 text-xs font-medium opacity-90">{c.role}</p>
+                    <p className="mt-1 text-[11px] leading-relaxed opacity-80">{c.note}</p>
                   </div>
-                  <p className="mt-1 text-xs font-medium opacity-90">{c.role}</p>
-                  <p className="mt-1.5 text-[11px] leading-relaxed opacity-80">{c.note}</p>
                 </div>
               ))}
             </div>
@@ -154,6 +167,28 @@ export function CaseNarrativeModal({ onClose, onOpenGraph }) {
                 <p className="mt-2 text-xs leading-relaxed text-[#625d53]">
                   <strong>Devishi &rarr; Akshay:</strong> Outbound 9:27 PM call immediately following the murder, followed by retroactive alibi message exchanges starting at 9:45 PM, identifies Devishi as an active co-conspirator in evidence tampering.
                 </p>
+              </div>
+            </div>
+
+            {/* Physical Evidence Photo Exhibit */}
+            <div className="mt-4 rounded-xl border border-[#f1c6c3] bg-[#fdf6f6] p-4">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#c0362c]">Forensic Exhibit // EVD-W87 (Recovered Murder Weapon)</span>
+              <div className="mt-2.5 flex flex-col sm:flex-row items-start gap-4">
+                <img
+                  src="/evidence/knife_w87.jpg"
+                  alt="Forensic Weapon Exhibit W87"
+                  className="w-full sm:w-36 h-36 rounded-xl object-cover border border-[#e8bdb9] shadow-sm shrink-0"
+                />
+                <div className="min-w-0 text-xs text-[#554f43]">
+                  <h5 className="font-serif text-base font-bold text-[#171511]">Tactical Folding Blade with "W87" Inscription</h5>
+                  <p className="mt-1 leading-relaxed">
+                    Recovered from drainage grate 120 meters south of the Dock Road warehouse. Forensic serology identified high-titer blood micro-spatter matching the DNA profile of <strong>Hriday V. Mehta</strong>. Latent ridge impressions on the bolster matched the right index and thumb print of <strong>Akshay Kumar Singh</strong>.
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2 font-mono text-[10px] text-[#777166]">
+                    <span className="rounded bg-white px-2 py-0.5 border border-[#e5c2be]">Status: CFSL Evidence Vault</span>
+                    <span className="rounded bg-white px-2 py-0.5 border border-[#e5c2be]">Chain of Custody: Logged</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

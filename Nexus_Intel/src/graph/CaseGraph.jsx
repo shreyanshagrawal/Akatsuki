@@ -220,6 +220,7 @@ function CaseGraphCanvas({ caseId }) {
           kind: node.kind,
           side: node.side,
           fields: node.fields,
+          avatar: node.avatar || null,
           hasChildren: node.childIds.length > 0,
           isExpanded: expandedIds.has(id),
           isSelected: selectedId === id,

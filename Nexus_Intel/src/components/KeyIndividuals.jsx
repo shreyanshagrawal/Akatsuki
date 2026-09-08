@@ -18,6 +18,8 @@ const allIndividuals = [
   {
     name: 'Akshay Kumar Singh',
     alias: 'Former Partner',
+    avatar: '/avatars/akshay.jpg',
+    weaponImage: '/evidence/knife_w87.jpg',
     caseId: 'CAS-2026-1140',
     caseTitle: 'The 11:40 Murder',
     score: '98.4',
@@ -32,11 +34,12 @@ const allIndividuals = [
     telemetry: 'Present at Dock Road Warehouse 20:45–21:45 IST; cell silence during murder; departed on foot at 21:45.',
     callRecord: '20:20 IST to Swastik (transit request) • 21:27 IST to Devishi (3m 42s confession/panic call).',
     alibiAudit: 'Claimed dinner at Bistro 9 with Devishi; debunked by Dock Road cell tower latch at 21:48 IST.',
-    physicalEvidence: 'DNA-matched blood micro-spatter identified on right leather shoe; victim\'s handset seized nearby.',
+    physicalEvidence: 'Tactical folding knife engraved "W87" recovered in trench; DNA-matched blood micro-spatter on right leather shoe; victim\'s handset seized nearby.',
   },
   {
     name: 'Devishi',
     alias: 'Alibi Confidante',
+    avatar: null,
     caseId: 'CAS-2026-1140',
     caseTitle: 'The 11:40 Murder',
     score: '89.2',
@@ -56,6 +59,7 @@ const allIndividuals = [
   {
     name: 'Hriday',
     alias: 'Victim',
+    avatar: '/avatars/hriday.jpg',
     caseId: 'CAS-2026-1140',
     caseTitle: 'The 11:40 Murder',
     score: '92.0',
@@ -75,6 +79,7 @@ const allIndividuals = [
   {
     name: 'Shreyansh Agrawal',
     alias: 'Accountant',
+    avatar: '/avatars/shreyansh.jpg',
     caseId: 'CAS-2026-1140',
     caseTitle: 'The 11:40 Murder',
     score: '74.5',
@@ -94,6 +99,7 @@ const allIndividuals = [
   {
     name: 'Swastik',
     alias: 'Driver',
+    avatar: '/avatars/swastik.jpg',
     caseId: 'CAS-2026-1140',
     caseTitle: 'The 11:40 Murder',
     score: '68.2',
@@ -113,6 +119,7 @@ const allIndividuals = [
   {
     name: 'Thaniska',
     alias: 'Confidante',
+    avatar: '/avatars/thaniska.jpg',
     caseId: 'CAS-2026-1140',
     caseTitle: 'The 11:40 Murder',
     score: '62.1',
@@ -260,6 +267,21 @@ export function KeyIndividuals({ onExit, caseId = 'CAS-2026-1140' }) {
                   {String(i + 1).padStart(2, '0')}
                 </span>
 
+                {/* Person Portrait / Avatar Record */}
+                <div className="relative shrink-0">
+                  {person.avatar ? (
+                    <img
+                      src={person.avatar}
+                      alt={person.name}
+                      className="size-14 sm:size-16 rounded-2xl object-cover border-2 border-[#e5e0d8] shadow-sm ring-1 ring-[#171511]/5"
+                    />
+                  ) : (
+                    <div className="grid size-14 sm:size-16 place-items-center rounded-2xl border-2 border-[#e5e0d8] bg-[#f2eee9] font-serif text-lg font-bold text-[#777166] shadow-inner">
+                      {person.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}
+                    </div>
+                  )}
+                </div>
+
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
@@ -382,6 +404,21 @@ export function KeyIndividuals({ onExit, caseId = 'CAS-2026-1140' }) {
                               Physical &amp; Forensic Evidence
                             </div>
                             <p className="mt-1.5 leading-relaxed text-[#554f43]">{person.physicalEvidence}</p>
+                          </div>
+                        )}
+
+                        {person.weaponImage && (
+                          <div className="sm:col-span-2 rounded-xl border border-[#f1c6c3] bg-[#fdf6f6] p-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                            <img
+                              src={person.weaponImage}
+                              alt="Physical Murder Weapon W87"
+                              className="size-24 rounded-lg object-cover border border-[#e5c2be] shadow-sm shrink-0"
+                            />
+                            <div className="min-w-0">
+                              <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-[#c0362c]">Physical Evidence Exhibit // EVD-W87</span>
+                              <h4 className="font-serif text-sm font-bold text-[#171511]">Tactical Folding Knife (Mark: W87)</h4>
+                              <p className="mt-0.5 text-xs text-[#554f43]">Murder weapon recovered from drainage trench 120m south of Dock Road warehouse. High-titer blood traces on blade confirmed matching Hriday V. Mehta DNA, with Akshay Kumar Singh thumbprint on bolster.</p>
+                            </div>
                           </div>
                         )}
                       </div>

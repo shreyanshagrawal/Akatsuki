@@ -128,6 +128,7 @@ export function CytoscapeGraph({ caseId = 'CAS-2026-1140' }) {
         const isSuspect = node.side === 'suspect'
         const isRoot = node.kind === 'root'
         const isCategory = node.kind === 'category'
+        const hasAvatar = Boolean(node.avatar)
 
         return {
           group: 'nodes',
@@ -137,7 +138,8 @@ export function CytoscapeGraph({ caseId = 'CAS-2026-1140' }) {
             kind: node.kind,
             side: node.side,
             fields: node.fields,
-            size: isRoot ? 74 : isCategory ? 52 : 38,
+            avatar: node.avatar || null,
+            size: isRoot ? 74 : hasAvatar ? 56 : isCategory ? 52 : 38,
             bgColor: isSuspect
               ? isRoot
                 ? '#c0362c'
@@ -203,6 +205,16 @@ export function CytoscapeGraph({ caseId = 'CAS-2026-1140' }) {
             'text-background-shape': 'roundrectangle',
             'transition-property': 'background-color, line-color, target-arrow-color, width, height, border-color, border-width',
             'transition-duration': '0.25s',
+          },
+        },
+        {
+          selector: 'node[avatar]',
+          style: {
+            'background-image': 'data(avatar)',
+            'background-fit': 'cover',
+            'background-clip': 'node',
+            'border-width': 3.5,
+            'border-color': '#ffffff',
           },
         },
         {

@@ -13,6 +13,8 @@ export function buildIndex(root) {
       kind: node.kind,
       side: node.side,
       fields: node.fields,
+      avatar: node.avatar || null,
+      evidenceImage: node.evidenceImage || null,
       parentId,
       childIds: node.children.map((child) => child.id),
     }
