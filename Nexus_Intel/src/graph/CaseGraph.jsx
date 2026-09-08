@@ -1,5 +1,5 @@
 // Nexus_Intel/src/graph/CaseGraph.jsx
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Background, Controls, ReactFlow } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { crossEdges, rootLinkEdge, suspectTree, victimTree } from './data'
@@ -42,19 +42,22 @@ export function CaseGraph() {
   const [expandedIds, setExpandedIds] = useState(() => new Set(['v-root', 's-root']))
   const [selectedId, setSelectedId] = useState(null)
 
-  function handleNodeClick(id) {
-    const isCurrentlyOpen = selectedId === id
-    setSelectedId(isCurrentlyOpen ? null : id)
-    setExpandedIds((current) => {
-      const next = new Set(current)
-      if (isCurrentlyOpen) {
-        for (const descendantId of collectDescendants(id, new Set())) next.delete(descendantId)
-      } else if (byId[id].childIds.length > 0) {
-        next.add(id)
-      }
-      return next
-    })
-  }
+  const handleNodeClick = useCallback(
+    (id) => {
+      const isCurrentlyOpen = selectedId === id
+      setSelectedId(isCurrentlyOpen ? null : id)
+      setExpandedIds((current) => {
+        const next = new Set(current)
+        if (isCurrentlyOpen) {
+          for (const descendantId of collectDescendants(id, new Set())) next.delete(descendantId)
+        } else if (byId[id].childIds.length > 0) {
+          next.add(id)
+        }
+        return next
+      })
+    },
+    [selectedId],
+  )
 
   const visibleIds = useMemo(() => {
     const victimVisible = computeVisible('v-root', expandedIds)
@@ -100,7 +103,7 @@ export function CaseGraph() {
         },
       }
     })
-  }, [visibleIds, expandedIds, selectedId, suspectDegrees])
+  }, [visibleIds, expandedIds, selectedId, suspectDegrees, handleNodeClick])
 
   const edges = useMemo(() => {
     const withHandles = structuralEdges.map((edge) => {
